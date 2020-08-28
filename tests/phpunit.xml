@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit
+        bootstrap="./BootStraps.php"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        verbose="true"
+        colors="true"
+        beStrictAboutOutputDuringTests="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        processIsolation="false"
+        stopOnFailure="false"
+        syntaxCheck="true"
+>
+    <testsuite name="Banks - Tests">
+        <directory>./</directory>
+    </testsuite>
+</phpunit>

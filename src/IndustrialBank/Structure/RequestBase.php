@@ -48,8 +48,6 @@ abstract class RequestBase implements RequestInterface
                     'USERID' => $config->getUserId(),
                     'USERPASS' => $config->getUserPass(),
                     'GENUSERKEY' => $config->getGenUserKey(),
-                    //                    'APPID' => $config->getAppId(),
-                    //                    'APPVER' => $config->getAppVer(),
                 ],
             ],
         ];
@@ -165,7 +163,6 @@ abstract class RequestBase implements RequestInterface
         }
         $xml = new XmlToArray(['encoding' => 'GBK',]);
         $responseString = "<?xml version='1.0' encoding='GBK' ?>{$response['content']}";
-        is_dir($this->logDir) && $this->debug($responseString, $this->logDir.'/response/'.$this->getRequestTag().'.xhtml');
         $content = $xml->buildArrayFromString($responseString);
         $headerCode = (string)($content['FOX']['SIGNONMSGSRSV1']['SONRS']['STATUS']['CODE'] ?? '300');
         if ($headerCode !== '0') {

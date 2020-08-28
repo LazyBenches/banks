@@ -1,0 +1,80 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * Email:jwy226@qq.com
+ * User: LazyBench
+ * Date: 2020/8/28
+ * Time: 12:13
+ */
+return [
+    0 => [
+        'url' => 'http://192.168.0.11:9007',
+        'encoding' => 'GBK',
+        'cid' => '4400396931',
+        'userId' => 'huangyulan',
+        'userPass' => 'YjWh20191230',
+        'genUserKey' => 'N',
+        'appId' => '',
+        'appVer' => '',
+        'mainAccount' => '441270100100632004',
+        'logDir' => '/var/www/banks/runtime',
+        'model' => 'App\\Model\\Entity\\Account0',
+        'accountTable' => 0,
+    ],
+    1 => [
+        'url' => 'http://192.168.0.17:9007',
+        'encoding' => 'GBK',
+        'cid' => '4400437538',
+        'userId' => 'htCode',
+        'userPass' => 'YjWh20191230',
+        'genUserKey' => 'N',
+        'appId' => '',
+        'appVer' => '',
+        'mainAccount' => '441130100100496666',
+        'logDir' => '/var/www/banks/runtime',
+        'model' => 'App\\Model\\Entity\\Account1',
+        'accountTable' => 1,
+    ],
+    2 => [
+        'url' => 'http://192.168.0.18:9007',
+        'encoding' => 'GBK',
+        'cid' => '4400436699',
+        'userId' => 'xzyCode',
+        'userPass' => 'YjWh20191230',
+        'genUserKey' => 'N',
+        'appId' => '',
+        'appVer' => '',
+        'mainAccount' => '441130100100496156',
+        'logDir' => '/var/www/banks/runtime',
+        'model' => 'App\\Model\\Entity\\Account2',
+        'accountTable' => 2,
+    ],
+    3 => [
+        'url' => 'http://192.168.0.19:9007',
+        'encoding' => 'GBK',
+        'cid' => '4400436706',
+        'userId' => 'xlCode',
+        'userPass' => 'YjWh20191230',
+        'genUserKey' => 'N',
+        'appId' => '',
+        'appVer' => '',
+        'mainAccount' => '441130100100496277',
+        'logDir' => '/var/www/banks/runtime',
+        'model' => 'App\\Model\\Entity\\Account3',
+        'accountTable' => 3,
+    ],
+    4 => [
+        'url' => 'http://192.168.0.21:9007',
+        'encoding' => 'GBK',
+        'cid' => '9900035839',
+        'userId' => 'jyCode',
+        'userPass' => 'YjWh20191230',
+        'genUserKey' => 'N',
+        'appId' => '',
+        'appVer' => '',
+        'mainAccount' => '441130100100500789',
+        'logDir' => '/var/www/banks/runtime',
+        'model' => 'App\\Model\\Entity\\Account4',
+        'accountTable' => 4,
+    ],
+];

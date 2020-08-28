@@ -72,8 +72,6 @@ class Industrial implements Bank
      */
     public function request($requestBodyString, RequestInterface $structure): bool
     {
-        $logDir = $this->config->getLogDir();
-        is_dir($logDir) && $structure->debug($requestBodyString, $logDir.'/request/'.$structure->getRequestTag().'.xhtml');
         $curl = new Curl();
         $response = $curl->setHeader(['Content-Type:text/xml'])->setParams($requestBodyString)
                          ->post($this->config->getUrl());
