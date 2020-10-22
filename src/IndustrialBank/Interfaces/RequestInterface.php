@@ -14,21 +14,31 @@ use LazyBench\Banks\IndustrialBank\Config\Config;
 
 interface RequestInterface
 {
+
     /**
      * Author:LazyBench
      *
-     * @param Config $config
-     * @return mixed
+     * @param array $param
+     * @return array
      */
-    public function handle(Config $config);
+    public function formatBody(array $param): array;
 
     /**
      * Author:LazyBench
      *
      * @param $body
-     * @return RequestInterface
+     * @return string
      */
-    public function setRequestBody(array $body): RequestInterface;
+    public function setRequestBody(array $body): string;
+
+    /**
+     * Author:LazyBench
+     * 设置请求头
+     * @param Config $config
+     * @param null $dateTime
+     * @return mixed
+     */
+    public function setRequestHeader(Config $config, $dateTime = null);
 
     /**
      * Author:LazyBench
@@ -39,27 +49,15 @@ interface RequestInterface
 
     /**
      * Author:LazyBench
-     *
-     * @param $response
-     * @return mixed
+     * 获取标签
+     * @return string
      */
-    public function handleResponse($response);
-
-    public function setRequestHeader(Config $config, $dateTime = null);
-
-    public function getPayStatus();
-
-    public function getStatusMsg();
-
-    public function getStatusCode();
-
-    public function getResponseTrnUid();
-
-    public function isQuery(): bool;
-
-    public function getError();
-
-    public function getErrNo();
-
     public function getRequestTag(): string;
+
+    /**
+     * Author:LazyBench
+     * 获取请求串
+     * @return string
+     */
+    public function getRequestString(): string;
 }

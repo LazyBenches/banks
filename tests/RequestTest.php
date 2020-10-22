@@ -9,7 +9,7 @@
 
 use LazyBench\Banks\IndustrialBank\Industrial;
 use LazyBench\Banks\IndustrialBank\Interfaces\RequestInterface;
-use LazyBench\Banks\IndustrialBank\Structure\Request\SubAccountQuery;
+use LazyBench\Banks\IndustrialBank\Structure\SubAccountQuery;
 
 include '../vendor/autoload.php';
 if (!function_exists('env')) {
@@ -131,17 +131,19 @@ class RequestTest
     /**
      * Author:LazyBench
      * @param $requestBody
-     * @param RequestInterface $structure
+     * @param RequestInterface|\LazyBench\Banks\IndustrialBank\Interfaces\ResponseInterface $structure
      * @return array|string
      */
     public function handleRequest(array $requestBody, RequestInterface $structure)
     {
         $structure->setRequestHeader($this->industrial->getConfig());
         $structure->setRequestBody($requestBody);
-        if (!$this->industrial->handleRequestString($structure)) {
-            return false;
+        $response = $this->industrial->request($structure);
+        if (env('INDUSTRIAL_BANK_DEBUG', false)) {
+            file_put_contents(alias('@runtime').'/logs/request_'.$structure->getRequestTag().'.xhtml', $structure->getRequestString());
+            file_put_contents(alias('@runtime').'/logs/response_'.$structure->getRequestTag().'.xhtml', $structure->getResponseString());
         }
-        return $this->industrial->handleRequest($structure);
+        return $response;
     }
 
     /**
@@ -172,16 +174,16 @@ foreach ($configs as $config) {
     }
     var_dump($structure->getResponseBody());
 }
-//$requestBody = [
-//    'RQBODY' => [
-//        'MAINACCT' => $test->getIndustrial()->getConfig()->getMainAccount(),
-//        'SIGNFLG' => 'Y',
-//    ],
-//];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\AccountSign();
-//$test->varExport($test->handle($requestBody, $structure, '虚拟主账户签约成功'), '虚拟主账户签约成功');
-//$test->varExport($test->handle($requestBody, $structure, '虚拟主账户签约失败'), '虚拟主账户签约失败');
-//$test->echo($structure->getRequestString());
+$requestBody = [
+    'RQBODY' => [
+        'MAINACCT' => $test->getIndustrial()->getConfig()->getMainAccount(),
+        'SIGNFLG' => 'Y',
+    ],
+];
+$structure = new \LazyBench\Banks\IndustrialBank\Structure\AccountSign('aaa');
+$test->varExport($test->handleRequest($requestBody, $structure), '虚拟主账户签约成功');
+$test->varExport($test->handleRequest($requestBody, $structure), '虚拟主账户签约失败');
+$test->echo($structure->getRequestString());
 //exit;
 //$requestBody = [
 //    'RQBODY' => [
@@ -239,9 +241,9 @@ foreach ($configs as $config) {
 //        ],
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\SubAccountOpen();
-//$test->varExport($test->handle($requestBody, $structure, 'sub/虚拟子账户批量开户成功'), '虚拟子账户批量开户成功');
-//$test->varExport($test->handle($requestBody, $structure, 'sub/虚拟子账户批量开户失败'), '虚拟子账户批量开户失败');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\SubAccountOpen();
+//$test->varExport($test->handleRequest($requestBody, $structure), '虚拟子账户批量开户成功');
+//$test->varExport($test->handleRequest($requestBody, $structure), '虚拟子账户批量开户失败');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/主账户对外转账.xhtml');
@@ -271,10 +273,10 @@ foreach ($configs as $config) {
 //        ],
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\OutTransfer();
-//$test->varExport($test->handle($requestBody, $structure, '主账号对外转账成功'), '主账号对外转账成功');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\OutTransfer('aaa');
+//$test->varExport($test->handleRequest($requestBody, $structure), '主账号对外转账成功');
 //$test->echo($structure->getRequestString(),'主账号对外转账请求');
-//$test->varExport($test->handle($requestBody, $structure, '主账号对外转账失败'), '主账号对外转账失败');
+//$test->varExport($test->handleRequest($requestBody, $structure), '主账号对外转账失败');
 //exit;
 //$xmlString = file_get_contents('../xml/request/查询转账交易.xhtml');
 //$xmlTool = new \LazyBench\Banks\Xml\XmlConverter($xmlString);
@@ -284,8 +286,8 @@ foreach ($configs as $config) {
 //        'CLIENTREF' => '20141119zzfc100',
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\OutTransferQuery();
-//$test->varExport($test->handle($requestBody, $structure, '查询转账交易'), '查询转账交易');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\OutTransferQuery();
+//$test->varExport($test->handleRequest($requestBody, $structure), '查询转账交易');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/quick/行内转账.xhtml');
@@ -315,8 +317,8 @@ foreach ($configs as $config) {
 //        ],
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\QuickOutInnerTransfer();
-//$test->varExport($test->handle($requestBody, $structure, 'quick/行内转账'), '行内转账');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\QuickOutInnerTransfer();
+//$test->varExport($test->handleRequest($requestBody, $structure), '行内转账');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/quick/跨行大小额转账.xhtml');
@@ -349,8 +351,8 @@ foreach ($configs as $config) {
 //        ],
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\QuickOutTransfer();
-//$test->varExport($test->handle($requestBody, $structure, 'quick/跨行大小额转账'), '跨行大小额转账');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\QuickOutTransfer();
+//$test->varExport($test->handleRequest($requestBody, $structure), '跨行大小额转账');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/quick/转账支付指令查询.xhtml');
@@ -361,9 +363,9 @@ foreach ($configs as $config) {
 //        'CLIENTREF' => 'testy533353',
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\QuickOutTransferQuery();
-//$test->varExport($test->handle($requestBody, $structure, 'quick/快速转账支付指令查询无记录'), '快速转账支付指令查询无记录');
-//$test->varExport($test->handle($requestBody, $structure, 'quick/快速转账支付指令查询有记录'), '快速转账支付指令查询有记录');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\QuickOutTransferQuery();
+//$test->varExport($test->handleRequest($requestBody, $structure), '快速转账支付指令查询无记录');
+//$test->varExport($test->handleRequest($requestBody, $structure), '快速转账支付指令查询有记录');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/async/批量支付.xhtml');
@@ -396,10 +398,10 @@ foreach ($configs as $config) {
 //        ],
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\BatOutTransfer();
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\BatOutTransfer();
 //$xml = $test->handleRequestString($requestBody, $structure, 'cf3213e233333');
-//$test->varExport($test->handle($requestBody, $structure, 'async/批量支付成功'), '批量支付成功');
-//$test->varExport($test->handle($requestBody, $structure, 'async/批量支付有误'), '批量支付有误');
+//$test->varExport($test->handleRequest($requestBody, $structure), '批量支付成功');
+//$test->varExport($test->handleRequest($requestBody, $structure), '批量支付有误');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/async/批量支付查询.xhtml');
@@ -410,10 +412,10 @@ foreach ($configs as $config) {
 //        'TRNUID' => 'cf3213e233333',
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\BatOutTransferQuery();
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\BatOutTransferQuery();
 //$xml = $test->handleRequestString([], $structure, 'cf3213e233333');
-//$test->varExport($test->handle([], $structure, 'async/批量支付查询无记录'), '批量支付查询无记录');
-//$test->varExport($test->handle([], $structure, 'async/批量支付查询有记录'), '批量支付查询有记录');
+//$test->varExport($test->handleRequest([], $structure), '批量支付查询无记录');
+//$test->varExport($test->handleRequest([], $structure), '批量支付查询有记录');
 //$test->echo($structure->getRequestString());
 //exit;
 //$xmlString = file_get_contents('../xml/request/sub/查询单个子账户详细.xhtml');
@@ -430,9 +432,9 @@ foreach ($configs as $config) {
 //        'STARTROW' => '1',
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\SubAccountQuery();
-//$test->varExport($test->handle($requestBody, $structure, 'sub/查询所有子账户详细'), '查询所有子账户详细');
-//$test->varExport($test->handle($requestBody, $structure, 'sub/查询单个子账户详细无记录'), '查询单个子账户详细无记录');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\SubAccountQuery();
+//$test->varExport($test->handleRequest($requestBody, $structure), '查询所有子账户详细');
+//$test->varExport($test->handleRequest($requestBody, $structure), '查询单个子账户详细无记录');
 //$test->echo($structure->getRequestString(), '查询所有子账户详细');
 //exit;
 //$xmlString = file_get_contents('../xml/request/sub/虚拟子账户内部转账.xhtml');
@@ -451,8 +453,8 @@ foreach ($configs as $config) {
 //        'DTDUE' => '2015-07-31',
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\SubInnerTransfer();
-//$test->varExport($test->handle($requestBody, $structure, 'sub/虚拟子账户内部转账'), '虚拟子账户内部转账');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\SubInnerTransfer();
+//$test->varExport($test->handleRequest($requestBody, $structure), '虚拟子账户内部转账');
 //$test->echo($structure->getRequestString(), '虚拟子账户内部转账请求');
 //exit;
 //$xmlString = file_get_contents('../xml/request/sub/虚拟子帐户对外支付.xhtml');
@@ -486,7 +488,7 @@ foreach ($configs as $config) {
 //        ],
 //    ],
 //];
-//$structure = new \LazyBench\Banks\IndustrialBank\Structure\Request\SubOutTransfer();
-//$test->varExport($test->handle($requestBody, $structure, 'sub/虚拟子帐户对外支付'), '虚拟子帐户对外支付');
+//$structure = new \LazyBench\Banks\IndustrialBank\Structure\SubOutTransfer();
+//$test->varExport($test->handleRequest($requestBody, $structure), '虚拟子帐户对外支付');
 //$test->echo($structure->getRequestString(), '虚拟子帐户对外支付请求');
 //exit;

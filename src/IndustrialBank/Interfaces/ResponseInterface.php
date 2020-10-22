@@ -12,5 +12,28 @@ namespace LazyBench\Banks\IndustrialBank\Interfaces;
 
 interface ResponseInterface
 {
-    public function handleBody();
+
+    /**
+     * Author:LazyBench
+     *
+     * @param $response
+     * @return mixed
+     */
+    public function handleResponse($response);
+
+    public function getPayStatus();
+
+    public function getStatusMsg();
+
+    public function getStatusCode();
+
+    public function getResponseTrnUid();
+
+    public function getError();
+
+    public function getErrNo();
+
+    public function getResponseString();
+
+    public function getResponseBody();
 }
