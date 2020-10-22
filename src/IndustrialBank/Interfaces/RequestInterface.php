@@ -26,10 +26,9 @@ interface RequestInterface
     /**
      * Author:LazyBench
      *
-     * @param $body
      * @return string
      */
-    public function setRequestBody(array $body): string;
+    public function formatRequestString(): string;
 
     /**
      * Author:LazyBench

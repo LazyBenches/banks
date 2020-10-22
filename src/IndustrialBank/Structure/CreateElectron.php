@@ -30,13 +30,14 @@ class CreateElectron implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'RQBODY' => [
                 'RECEIPT_TYPE' => '01',
                 'ACCTID' => "{$param['mainAccount']}{$param['subAccount']}",//如果是主账号则为18位，虚拟子账号24位
                 'RECEIPTDATE' => $param['date'],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

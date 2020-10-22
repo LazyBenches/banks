@@ -31,7 +31,7 @@ class OutTransfer implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'XFERRQ' => [
                 'XFERINFO' => [
                     'ACCTFROM' => [
@@ -54,6 +54,7 @@ class OutTransfer implements RequestInterface, ResponseInterface
                 ],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

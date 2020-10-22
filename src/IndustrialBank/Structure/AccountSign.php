@@ -31,13 +31,15 @@ class AccountSign implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'RQBODY' => [
                 'MAINACCT' => $param['mainAccount'],//18位实体扣款账户, 必输
                 'SIGNFLG' => 'Y',
             ],
         ];
+        return $this->requestBody;
     }
+
     /**
      * Author:LazyBench
      *

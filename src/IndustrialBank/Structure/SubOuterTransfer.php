@@ -31,11 +31,11 @@ class SubOuterTransfer implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'VATRQ' => [
                 'VATTYPE' => '1',
                 'MAINACCT' => $param['mainAccount'],
-                'SUBACCT' => str_pad($param['subAccount'], '6', '0', STR_PAD_LEFT),
+                'SUBACCT' => $param['subAccount'],
                 'XFERINFO' => [
                     'ACCTFROM' => [
                         'ACCTID' => $param['mainAccount'],
@@ -44,7 +44,7 @@ class SubOuterTransfer implements RequestInterface, ResponseInterface
                     'ACCTTO' => [
                         'ACCTID' => $param['toAccount'],
                         'NAME' => $param['toName'],
-                        'BANKDESC' => $param['bankName'],
+                        'BANKDESC' => $param['toBankName'],
                         'CITY' => $param['toCity'],
                         '@ATTRIBUTES' => [
                             'INTERBANK' => $param['isInnerBank'],
@@ -57,6 +57,7 @@ class SubOuterTransfer implements RequestInterface, ResponseInterface
                 ],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

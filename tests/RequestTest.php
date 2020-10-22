@@ -130,14 +130,15 @@ class RequestTest
 
     /**
      * Author:LazyBench
-     * @param $requestBody
+     * @param $param
      * @param RequestInterface|\LazyBench\Banks\IndustrialBank\Interfaces\ResponseInterface $structure
      * @return array|string
      */
-    public function handleRequest(array $requestBody, RequestInterface $structure)
+    public function handleRequest(array $param, RequestInterface $structure)
     {
         $structure->setRequestHeader($this->industrial->getConfig());
-        $structure->setRequestBody($requestBody);
+        $structure->formatBody($param);
+        $structure->formatRequestString();
         $response = $this->industrial->request($structure);
         if (env('INDUSTRIAL_BANK_DEBUG', false)) {
             file_put_contents(alias('@runtime').'/logs/request_'.$structure->getRequestTag().'.xhtml', $structure->getRequestString());

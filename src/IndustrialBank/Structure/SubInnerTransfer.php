@@ -31,16 +31,17 @@ class SubInnerTransfer implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'VSAINTRSFRQ' => [
                 'MAINACCT' => $param['mainAccount'],
-                'SUBACCT' => str_pad($param['subAccount'], '6', '0', STR_PAD_LEFT),
-                'TOSUBACCT' => str_pad($param['subToAccount'], '6', '0', STR_PAD_LEFT),
+                'SUBACCT' => $param['subAccount'],
+                'TOSUBACCT' => $param['subToAccount'],
                 'TRNAMT' => $param['amount'],
                 'PURPOSE' => $param['purpose'],
                 'MEMO' => $param['memo'],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

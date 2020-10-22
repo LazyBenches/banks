@@ -30,11 +30,11 @@ class SubAccountLog implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'VATSTMTRQ' => [
                 'VATTYPE' => '1',
                 'MAINACCT' => $param['mainAccount'],
-                'SUBACCT' => (string)str_pad($param['account'], '6', '0', STR_PAD_LEFT),
+                'SUBACCT' => $param['subAccount'],
                 'ACCTFROM' => [
                     'ACCTID' => $param['mainAccount'],
                 ],
@@ -45,6 +45,7 @@ class SubAccountLog implements RequestInterface, ResponseInterface
                 ],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

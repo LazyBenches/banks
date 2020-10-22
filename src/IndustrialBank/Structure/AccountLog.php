@@ -30,7 +30,8 @@ class AccountLog implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+
+        $this->requestBody = array_change_key_case([
             'RQBODY' => [
                 'ACCTFROM' => [
                     'ACCTID' => $param['mainAccount'],//18位实体扣款账户, 必输
@@ -42,7 +43,8 @@ class AccountLog implements RequestInterface, ResponseInterface
                     'TRNTYPE' => $param['transferType'],//借贷标记：0表示借方(往帐)  1表示贷方(来帐) 默认查询2-借贷双方全部流水
                 ],
             ],
-        ];
+        ], CASE_UPPER);
+        return $this->requestBody;
     }
 
     /**

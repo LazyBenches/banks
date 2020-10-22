@@ -30,7 +30,7 @@ class SyncElectron implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'RQBODY' => [
                 '@ATTRIBUTES' => [
                     'PAGE' => $param['page'],
@@ -38,6 +38,7 @@ class SyncElectron implements RequestInterface, ResponseInterface
                 'CLT_REF_NO' => $param['nid'],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

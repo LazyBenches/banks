@@ -31,13 +31,14 @@ class SubAccountQuery implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'INQUIRYINFO' => [
                 'MAINACCT' => $param['mainAccount'],
-                'SUBACCT' => 'ALL',
-                'STARTROW' => $param['start'],
+                'SUBACCT' => $param['subAccount'],
+                'STARTROW' => $param['startRow'],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

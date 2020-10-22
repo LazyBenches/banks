@@ -30,11 +30,12 @@ class QueryTransferInfo implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'XFERINQRQ' => [
                 'CLIENTREF' => $param['oldTrnUid'],
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

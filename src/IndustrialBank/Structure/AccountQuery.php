@@ -31,11 +31,12 @@ class AccountQuery implements RequestInterface, ResponseInterface
      */
     public function formatBody(array $param): array
     {
-        return [
+        $this->requestBody = [
             'RQBODY' => [
                 'ACCTID' => $param['mainAccount'],//18位实体扣款账户, 必输
             ],
         ];
+        return $this->requestBody;
     }
 
     /**

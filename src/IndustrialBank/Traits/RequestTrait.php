@@ -60,13 +60,11 @@ trait RequestTrait
     /**
      * Author:LazyBench
      * 设置请求body
-     * @param array $body
      * @return string
      * @throws \LazyBench\Banks\ArrayToXml\Exception\ConversionException
      */
-    public function setRequestBody(array $body): string
+    public function formatRequestString(): string
     {
-        $this->requestBody = array_change_key_case($body, CASE_UPPER);
         $xml = new ArrayToXml(['encoding' => 'GBK',]);
         if ($this->onlyHeader) {
             $this->requestString = $xml->buildXML($this->requestHeader, 'FOX')->saveXML();
